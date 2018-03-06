@@ -1,0 +1,29 @@
+var bureau = {
+	 search: {
+	 	search: "bureau",
+	 	pages: 1000
+	 },
+    providers: [
+    
+		{
+			name: "LeBonCoin.com Location Bureau",
+			helper: "leboncoin-client",
+			baseUrl : {
+		        protocol: "https",
+		        hostname: "www.leboncoin.fr",
+		        pathname: "/bureaux_commerces/offres/provence_alpes_cote_d_azur/bouches_du_rhone/",
+		        port: 443,
+		        method: "GET",
+		        encoding: 'utf8'
+		    },
+		    params: {
+		        th:1,
+		        parrot:0,
+		        st:"a",
+		        pe:1
+		    }
+		}
+    ]
+};
+
+module.exports = bureau;

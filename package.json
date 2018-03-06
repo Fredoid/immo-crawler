@@ -1,0 +1,28 @@
+{
+  "name": "immocrawler",
+  "version": "0.0.1",
+  "description": "Crawl web to fnd immo ads",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Frédéric Jeanpierre <fjp.webmaster@gmail.com>",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "elasticsearch": "*",
+    "moment": "*",
+    "promise": "*",
+    "request": "*",
+    "request-debug": "*",
+    "cheerio": "*",
+    "trim": "*",
+    "utf8": "*",
+    "node-geocoder": "*",
+    "iconv-lite": "*",
+    "jshs2": "*",
+    "co": "*",
+    "debug": "*",
+    "should": "*",
+    "extend": "*"
+  }
+}

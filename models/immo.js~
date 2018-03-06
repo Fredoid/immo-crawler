@@ -1,0 +1,26 @@
+
+module.exports = {
+        index: "immo",
+        type: "ads",
+        keys: ["offerid", "source"],
+        mapping: {
+            title: { type: "string", index : "not_analyzed" },
+            content: { type: "string" },
+            city: { type: "string", index : "not_analyzed" },
+            dept: { type: "string", index : "not_analyzed" },
+            url: { type: "string", index : "not_analyzed" },
+            type: { type: "string", index : "not_analyzed" },
+            search: { type: "string", index : "not_analyzed" },
+            price: { type: "integer" },
+            pricemin: { type: "integer" },
+            pricemax: { type: "integer" },
+            area: { type: "integer" },
+            offerid: { type: "integer" },
+            geopoint: { "type" : "geo_point"},
+            importdate: { type: "date"},
+            source: { type: "string", index : "not_analyzed" }
+        },
+        connection : {
+            host: '127.0.0.1:9200'
+        }
+    },

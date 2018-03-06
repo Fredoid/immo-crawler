@@ -1,0 +1,83 @@
+var NodeGeocoder = require('node-geocoder');
+
+
+var options = {
+    provider: 'google',
+    // Optional depending on the providers
+    httpAdapter: 'https', // Default
+    apiKey: 'AIzaSyAjpnpBW7fEtEnq3j6zYKlXK8t20VIlgzo', // for Mapquest, OpenCage, Google Premier
+    formatter: null         // 'gpx', 'string', ...
+};
+
+var geocoder = NodeGeocoder(options);
+
+var geoCode = function(address){
+    return util.promise(function (resolve, reject) {
+        console.log("GeoCode ", address);
+        // Or using Promise
+        geocoder.geocode(address)
+            .then(function(res){
+                // console.log('geoCode', "result from api", res);
+                if(res.length > 0) {
+                    console.log("GeoCode, point ", {lat: res[0].latitude, lon: res[0].longitude});
+                    resolve(res[0]);
+                }
+                else {
+                    console.log("GeoCode, point not found");
+                    reject(null);
+                }
+            }, function(error){
+                console.log("geoCode", "Error", error)
+                reject(error);
+            })
+            .catch(function(error){
+                console.log("geoCode", "Error", error)
+                reject(error);
+            });
+    });
+}
+
+var batch = function(onResult, onError){
+    var $this = this;
+    var _batch = [];
+    var _source = [];
+    var autocommit = 20;
+
+    var waiting = false;
+    var waiters = [];
+
+    this.add = function(source, address){
+        if(waiting) return waiters.push({ callee: arguments.callee, args: arguments});
+        _source.push({ source: source, address: address});
+        _batch.push(address);
+        if(_batch.length > autocommit) $this.geocode();
+    };
+
+    this.geocode = function(){
+        waiting = true;
+        console.log("GeoCoder Bulk ("+_batch.length+")");
+
+        geocoder.batchGeocode(_batch, function (err, resp) {
+            _batch = [];
+            _source = [];
+
+            if (err) return onError(err);
+            waiting = false;
+            waiters.forEach(function(element){
+                element.callee.apply(element.callee.caller, element.args);
+            });
+
+            resp.forEach(function(element, index){
+                _source[index].geopoint = element;
+            });
+            return onResult(_source);
+        });
+    }
+}
+
+var helper = {
+    geoCode: geoCode,
+    batch: batch
+};
+
+module.exports = helper;
